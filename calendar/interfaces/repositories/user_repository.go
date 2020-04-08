@@ -1,4 +1,4 @@
-package interfaces
+package repositories
 
 import (
 	"calendar/calendar/domain/models"
@@ -47,9 +47,4 @@ func (r *userRepository) Delete(id int64) error {
 	}
 
 	return errors.New("removing user does not exist in userRepository")
-}
-
-type EventRepository interface {
-	Store(event models.Event)
-	FindById(id int)
 }
