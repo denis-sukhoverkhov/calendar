@@ -1,0 +1,7 @@
+HttpListen:
+  Ip: 0.0.0.0
+  Port: 8005
+
+Logs:
+  PathToLogFile: logs/all.log
+  Level: debug
