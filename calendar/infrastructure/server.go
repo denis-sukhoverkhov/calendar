@@ -1,9 +1,9 @@
 package infrastructure
 
 import (
-	api_http "calendar/calendar/infrastructure/api/http"
 	"context"
 	"fmt"
+	api_http "github.com/denis-sukhoverkhov/calendar/calendar/infrastructure/api/http"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"go.uber.org/zap"

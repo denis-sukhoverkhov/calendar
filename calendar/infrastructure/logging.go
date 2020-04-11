@@ -4,6 +4,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"go.uber.org/zap"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -51,13 +52,13 @@ func NewLogger(level string, pathToLogFile string) *zap.Logger {
 
 	err := os.MkdirAll(path.Dir(pathToLogFile), os.ModePerm)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error creating directory for logs, %v", err)
 	}
 
 	logLevel := zap.NewAtomicLevel()
 	err = logLevel.UnmarshalText([]byte(level))
 	if err != nil {
-		panic(err)
+		log.Fatalf("Unmarshaling error of logger config, %v", err)
 	}
 
 	cfg := zap.Config{
@@ -70,7 +71,7 @@ func NewLogger(level string, pathToLogFile string) *zap.Logger {
 	}
 	logger, err := cfg.Build(zap.AddStacktrace(logLevel))
 	if err != nil {
-		panic(err)
+		log.Fatalf("Logger error creating, %v", err)
 	}
 	defer logger.Sync()
 
