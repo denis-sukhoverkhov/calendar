@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"calendar/calendar/domain"
-	"calendar/calendar/domain/models"
+	"github.com/denis-sukhoverkhov/calendar/app/domain"
+	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"

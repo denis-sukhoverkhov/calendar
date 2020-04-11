@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	"calendar/calendar/domain"
-	"calendar/calendar/domain/models"
 	"errors"
+	"github.com/denis-sukhoverkhov/calendar/app/domain"
+	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
 )
 
 type EventRepository interface {

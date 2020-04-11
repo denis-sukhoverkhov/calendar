@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"calendar/calendar/domain/models"
 	"errors"
+	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
 )
 
 type UserRepository interface {
