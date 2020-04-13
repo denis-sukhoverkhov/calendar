@@ -3,9 +3,10 @@ package infrastructure
 import (
 	"context"
 	"fmt"
-	api_http "github.com/denis-sukhoverkhov/calendar/app/infrastructure/api/http"
+	apihttp "github.com/denis-sukhoverkhov/calendar/app/infrastructure/api/http"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"go.uber.org/zap"
 	"net/http"
 	"os"
@@ -15,15 +16,20 @@ import (
 )
 
 type Server struct {
-	l *zap.Logger
+	l      *zap.Logger
+	pgPool *pgxpool.Pool
 	*http.Server
 }
 
 func NewServer(config Configuration) (*Server, error) {
-	logger := NewLogger(config.Logs.Level, config.Logs.PathToLogFile)
 
+	logger := NewLogger(config.Logs.Level, config.Logs.PathToLogFile)
 	listenAddr := fmt.Sprintf("%s:%d", config.HttpListen.Ip, config.HttpListen.Port)
+	// FIXME: эта строка нужна?
 	errorLog, _ := zap.NewStdLogAt(logger, zap.ErrorLevel)
+
+	pgPool := NewPgPool(config, logger)
+
 	srv := http.Server{
 		Addr:         listenAddr,
 		Handler:      NewHttpApi(logger),
@@ -33,7 +39,7 @@ func NewServer(config Configuration) (*Server, error) {
 		IdleTimeout:  15 * time.Second,
 	}
 
-	return &Server{logger, &srv}, nil
+	return &Server{logger, pgPool, &srv}, nil
 }
 
 func (s *Server) Start() {
@@ -72,10 +78,9 @@ func NewHttpApi(logger *zap.Logger) *chi.Mux {
 	r.Use(zapLogger(logger))
 	r.Use(middleware.Recoverer)
 
-	r.Get("/", api_http.HandleNotFound)
-	r.Get("/hello", api_http.Hello)
+	r.Get("/", apihttp.Main)
+	r.Get("/hello", apihttp.Hello)
 
 	logRoutes(r, logger)
-
 	return r
 }

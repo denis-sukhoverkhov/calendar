@@ -18,9 +18,19 @@ type logs struct {
 	Level         string // it can be (error/warn/info/debug)
 }
 
+type db struct {
+	Host         string
+	Port         int
+	Dbname       string
+	PoolMaxConns int
+	Password     string
+	User         string
+}
+
 type Configuration struct {
 	HttpListen httpListen
 	Logs       logs
+	DB         db
 }
 
 func InitConfig() Configuration {

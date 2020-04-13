@@ -14,7 +14,7 @@ func Hello(writer http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func HandleNotFound(writer http.ResponseWriter, _ *http.Request) {
+func Main(writer http.ResponseWriter, _ *http.Request) {
 	_, err := io.WriteString(writer, fmt.Sprintf("Welcome to the main page!"))
 	if err != nil {
 		log.Fatalf("/, %s", err)

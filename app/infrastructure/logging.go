@@ -73,7 +73,6 @@ func NewLogger(level string, pathToLogFile string) *zap.Logger {
 	if err != nil {
 		log.Fatalf("Logger error creating, %v", err)
 	}
-	defer logger.Sync()
 
 	logger.Info("logger construction succeeded")
 

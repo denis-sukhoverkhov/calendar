@@ -5,3 +5,11 @@ HttpListen:
 Logs:
   PathToLogFile: logs/all.log
   Level: debug
+
+DB:
+  Host: 127.0.0.1
+  Port: 5433
+  Dbname: postgres
+  PoolMaxConns: 15
+  Password: postgres
+  User: postgres
