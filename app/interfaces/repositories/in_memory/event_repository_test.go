@@ -1,4 +1,4 @@
-package repositories
+package in_memory
 
 import (
 	"github.com/denis-sukhoverkhov/calendar/app/domain"

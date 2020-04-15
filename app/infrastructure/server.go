@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	apihttp "github.com/denis-sukhoverkhov/calendar/app/infrastructure/api/http"
+	"github.com/denis-sukhoverkhov/calendar/app/interfaces"
+	"github.com/denis-sukhoverkhov/calendar/app/interfaces/repositories"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"go.uber.org/zap"
 	"net/http"
 	"os"
@@ -15,13 +16,13 @@ import (
 	"time"
 )
 
-type Server struct {
-	l      *zap.Logger
-	pgPool *pgxpool.Pool
+type AppServer struct {
+	l    *zap.Logger
+	repo *repositories.RepositoryInteractor
 	*http.Server
 }
 
-func NewServer(config Configuration) (*Server, error) {
+func NewServer(config Configuration) (*AppServer, error) {
 
 	logger := NewLogger(config.Logs.Level, config.Logs.PathToLogFile)
 	listenAddr := fmt.Sprintf("%s:%d", config.HttpListen.Ip, config.HttpListen.Port)
@@ -29,20 +30,21 @@ func NewServer(config Configuration) (*Server, error) {
 	errorLog, _ := zap.NewStdLogAt(logger, zap.ErrorLevel)
 
 	pgPool := NewPgPool(config, logger)
+	repos := interfaces.InitRepositories(pgPool)
 
 	srv := http.Server{
 		Addr:         listenAddr,
-		Handler:      NewHttpApi(logger),
+		Handler:      NewHttpApi(repos, logger),
 		ErrorLog:     errorLog,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  15 * time.Second,
 	}
 
-	return &Server{logger, pgPool, &srv}, nil
+	return &AppServer{logger, repos, &srv}, nil
 }
 
-func (s *Server) Start() {
+func (s *AppServer) Start() {
 	s.l.Info("Starting server")
 	defer s.l.Sync()
 
@@ -56,7 +58,7 @@ func (s *Server) Start() {
 	s.gracefulShutdown()
 }
 
-func (s *Server) gracefulShutdown() {
+func (s *AppServer) gracefulShutdown() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	sig := <-quit
@@ -72,7 +74,7 @@ func (s *Server) gracefulShutdown() {
 	s.l.Info("Server stopped")
 }
 
-func NewHttpApi(logger *zap.Logger) *chi.Mux {
+func NewHttpApi(repos *repositories.RepositoryInteractor, logger *zap.Logger) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(zapLogger(logger))
@@ -80,6 +82,7 @@ func NewHttpApi(logger *zap.Logger) *chi.Mux {
 
 	r.Get("/", apihttp.Main)
 	r.Get("/hello", apihttp.Hello)
+	r.Get("/user/{userId:[0-9]+}", apihttp.NewHelloHandler(repos))
 
 	logRoutes(r, logger)
 	return r

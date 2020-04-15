@@ -1,17 +1,10 @@
-package repositories
+package in_memory
 
 import (
 	"errors"
 	"github.com/denis-sukhoverkhov/calendar/app/domain"
 	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
 )
-
-type EventRepository interface {
-	Store(user models.Event)
-	FindById(id int)
-	FindAll()
-	Delete(id int)
-}
 
 type eventRepository struct {
 	events map[int64]*models.Event

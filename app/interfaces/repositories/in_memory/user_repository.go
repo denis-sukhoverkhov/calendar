@@ -1,16 +1,9 @@
-package repositories
+package in_memory
 
 import (
 	"errors"
 	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
 )
-
-type UserRepository interface {
-	Store(user models.User)
-	FindById(id int)
-	FindAll()
-	Delete(id int)
-}
 
 type userRepository struct {
 	users map[int64]*models.User
