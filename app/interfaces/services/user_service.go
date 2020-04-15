@@ -23,3 +23,11 @@ func (u *UserService) GetById(userId int) (*models.User, error) {
 	}
 	return user, nil
 }
+
+func (u *UserService) GetAll() ([]*models.User, error) {
+	user, err := u.rep.FindAll()
+	if err != nil {
+		return nil, fmt.Errorf("UserService.GetAll error %w", err)
+	}
+	return user, nil
+}

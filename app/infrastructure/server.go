@@ -82,7 +82,8 @@ func NewHttpApi(repos *repositories.RepositoryInteractor, logger *zap.Logger) *c
 
 	r.Get("/", apihttp.Main)
 	r.Get("/hello", apihttp.Hello)
-	r.Get("/user/{userId:[0-9]+}", apihttp.NewHelloHandler(repos))
+	r.Get("/user/{userId:[0-9]+}", apihttp.GetUserHandler(repos))
+	r.Get("/user", apihttp.GetUsersHandler(repos))
 
 	logRoutes(r, logger)
 	return r

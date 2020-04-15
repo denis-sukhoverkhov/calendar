@@ -11,16 +11,18 @@ import (
 
 type userDbRepository struct {
 	pool *pgxpool.Pool
+	sq sq.StatementBuilderType
 }
 
 func NewUserDbRepository(pgPool *pgxpool.Pool) repositories.UserRepository {
 	return &userDbRepository{
 		pool: pgPool,
+		sq: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
 	}
 }
 
 func (r *userDbRepository) FindById(id int) (*models.User, error) {
-	query := sq.Select("*").From("\"user\"").Where(sq.Eq{"id": id}).PlaceholderFormat(sq.Dollar)
+	query := r.sq.Select("*").From("\"user\"").Where(sq.Eq{"id": id}, sq.Eq{"active": true})
 	sql, args, err := query.ToSql()
 	if err != nil {
 		return nil, fmt.Errorf("User.FindById QueryBuilder error %w", err)
@@ -35,25 +37,37 @@ func (r *userDbRepository) FindById(id int) (*models.User, error) {
 	return user, nil
 }
 
-//func (r *eventRepository) FindByUserId(Userid int64) []models.Event {
-//	events := make([]models.Event, 0)
-//	for _, val := range r.events {
-//		if val.UserId == Userid {
-//			events = append(events, *val)
-//		}
-//	}
-//	return events
-//}
-//
-//func (r *eventRepository) FindAll() []models.Event {
-//
-//	events := make([]models.Event, len(r.events))
-//	for _, val := range r.events {
-//		events[val.Id-1] = *val
-//	}
-//	return events
-//}
-//
+func (r *userDbRepository) FindAll() ([]*models.User, error) {
+	query := r.sq.Select("*").From("\"user\"").Where(sq.Eq{"active": true})
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("User.FindAll QueryBuilder error %w", err)
+	}
+
+	users := make([]*models.User, 0)
+	rows, err := r.pool.Query(context.Background(), sql, args...)
+	if err != nil {
+		return nil, fmt.Errorf("User.FindAll rows errors %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		user := models.User{}
+		err := rows.Scan(
+			&user.Id, &user.FirstName, &user.LastName, &user.Active, &user.CreatedAt, &user.UpdatedAt)
+		if err != nil {
+			return nil, fmt.Errorf("User.FindAll QueryRow error %w", err)
+		}
+		users = append(users, &user)
+	}
+
+	if rows.Err() != nil {
+		return nil, fmt.Errorf("User.FindAll all errors %w", err)
+	}
+
+	return users, nil
+}
+
 //func (r *eventRepository) Store(event models.Event) (*models.Event, error) {
 //	alreadyStoredEventsForCurrentUser := r.FindByUserId(event.UserId)
 //	if len(alreadyStoredEventsForCurrentUser) == 0 {
