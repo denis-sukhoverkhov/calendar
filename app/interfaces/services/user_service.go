@@ -39,3 +39,11 @@ func (u *UserService) Save(user *models.User) (*models.User, error) {
 	}
 	return newUser, nil
 }
+
+func (u *UserService) Delete(userId int) error {
+	err := u.rep.Delete(userId)
+	if err != nil {
+		return fmt.Errorf("UserService.Delete error %w", err)
+	}
+	return nil
+}

@@ -83,17 +83,28 @@ func (r *userDbRepository) Store(user models.User) (*models.User, error) {
 	err = r.pool.QueryRow(context.Background(), sql, args...).Scan(
 		&newUser.Id, &newUser.FirstName, &newUser.LastName, &newUser.Active, &newUser.CreatedAt, &newUser.UpdatedAt)
 	if err != nil {
-		return nil, fmt.Errorf("User.FindById QueryRow error %w", err)
+		return nil, fmt.Errorf("User.FindById execution error %w", err)
 	}
 
 	return newUser, nil
 }
 
-//func (r *eventRepository) Delete(id int64) error {
-//	if _, ok := r.events[id]; ok {
-//		delete(r.events, id)
-//		return nil
-//	}
-//
-//	return errors.New("removing user does not exist in userRepository")
-//}
+func (r *userDbRepository) Delete(id int) error {
+	query := r.sq.Delete("\"user\"").Where(sq.Eq{"id": id})
+
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return fmt.Errorf("User.Delete QueryBuilder error %w", err)
+	}
+
+	_, err = r.pool.Exec(context.Background(), sql, args...)
+	if err != nil {
+		return fmt.Errorf("User.Delete execution error %w", err)
+	}
+	//println(commandTag)
+	//if commandTag.RowsAffected() != 1 {
+	//	return errors.New("No row found to delete")
+	//}
+
+	return nil
+}

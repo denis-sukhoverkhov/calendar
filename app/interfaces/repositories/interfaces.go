@@ -15,7 +15,7 @@ type UserRepository interface {
 	Store(user models.User) (*models.User, error)
 	FindById(id int) (*models.User, error)
 	FindAll() ([]*models.User, error)
-	//Delete(id int) error
+	Delete(id int) error
 }
 
 type RepositoryInteractor struct {
