@@ -5,6 +5,7 @@ go 1.13
 require (
 	github.com/Masterminds/squirrel v1.2.0
 	github.com/go-chi/chi v4.1.0+incompatible
+	github.com/go-chi/render v1.0.1
 	github.com/golang-migrate/migrate/v4 v4.10.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/jackc/pgx/v4 v4.6.0

@@ -12,7 +12,7 @@ type EventRepository interface {
 }
 
 type UserRepository interface {
-	//Store(user models.User) *models.User
+	Store(user models.User) (*models.User, error)
 	FindById(id int) (*models.User, error)
 	FindAll() ([]*models.User, error)
 	//Delete(id int) error

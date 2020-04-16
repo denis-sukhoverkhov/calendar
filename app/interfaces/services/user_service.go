@@ -31,3 +31,11 @@ func (u *UserService) GetAll() ([]*models.User, error) {
 	}
 	return user, nil
 }
+
+func (u *UserService) Save(user *models.User) (*models.User, error) {
+	newUser, err := u.rep.Store(*user)
+	if err != nil {
+		return nil, fmt.Errorf("UserService.Save error %w", err)
+	}
+	return newUser, nil
+}

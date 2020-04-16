@@ -11,13 +11,13 @@ import (
 
 type userDbRepository struct {
 	pool *pgxpool.Pool
-	sq sq.StatementBuilderType
+	sq   sq.StatementBuilderType
 }
 
 func NewUserDbRepository(pgPool *pgxpool.Pool) repositories.UserRepository {
 	return &userDbRepository{
 		pool: pgPool,
-		sq: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
+		sq:   sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
 	}
 }
 
@@ -68,27 +68,27 @@ func (r *userDbRepository) FindAll() ([]*models.User, error) {
 	return users, nil
 }
 
-//func (r *eventRepository) Store(event models.Event) (*models.Event, error) {
-//	alreadyStoredEventsForCurrentUser := r.FindByUserId(event.UserId)
-//	if len(alreadyStoredEventsForCurrentUser) == 0 {
-//		r.events[event.Id] = &event
-//		return r.events[event.Id], nil
-//	}
-//
-//	for i := 0; i < len(alreadyStoredEventsForCurrentUser); i++ {
-//
-//		if (event.From.After(alreadyStoredEventsForCurrentUser[i].From) &&
-//			event.From.Before(alreadyStoredEventsForCurrentUser[i].To)) ||
-//			(event.To.After(alreadyStoredEventsForCurrentUser[i].From) &&
-//				event.From.Before(alreadyStoredEventsForCurrentUser[i].To)) ||
-//			(event.From.Before(alreadyStoredEventsForCurrentUser[i].From) && event.To.After(alreadyStoredEventsForCurrentUser[i].To)) {
-//			return nil, domain.ErrDateBusy
-//		}
-//	}
-//	r.events[event.Id] = &event
-//	return r.events[event.Id], nil
-//}
-//
+func (r *userDbRepository) Store(user models.User) (*models.User, error) {
+	query := r.sq.Insert("\"user\"").
+		Columns("first_name", "last_name").
+		Values(user.FirstName, user.LastName).
+		Suffix("RETURNING *")
+
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("User.FindAll QueryBuilder error %w", err)
+	}
+
+	newUser := &models.User{}
+	err = r.pool.QueryRow(context.Background(), sql, args...).Scan(
+		&newUser.Id, &newUser.FirstName, &newUser.LastName, &newUser.Active, &newUser.CreatedAt, &newUser.UpdatedAt)
+	if err != nil {
+		return nil, fmt.Errorf("User.FindById QueryRow error %w", err)
+	}
+
+	return newUser, nil
+}
+
 //func (r *eventRepository) Delete(id int64) error {
 //	if _, ok := r.events[id]; ok {
 //		delete(r.events, id)
