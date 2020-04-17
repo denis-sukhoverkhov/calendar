@@ -101,10 +101,6 @@ func (r *userDbRepository) Delete(id int) error {
 	if err != nil {
 		return fmt.Errorf("User.Delete execution error %w", err)
 	}
-	//println(commandTag)
-	//if commandTag.RowsAffected() != 1 {
-	//	return errors.New("No row found to delete")
-	//}
 
 	return nil
 }

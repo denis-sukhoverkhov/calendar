@@ -6,17 +6,17 @@ import (
 	"github.com/denis-sukhoverkhov/calendar/app/interfaces/repositories"
 )
 
-type UserService struct {
+type userService struct {
 	rep repositories.UserRepository
 }
 
-func NewUserService(repository *repositories.UserRepository) *UserService {
-	return &UserService{
+func NewUserService(repository *repositories.UserRepository) *userService {
+	return &userService{
 		rep: *repository,
 	}
 }
 
-func (u *UserService) GetById(userId int) (*models.User, error) {
+func (u *userService) GetById(userId int) (*models.User, error) {
 	user, err := u.rep.FindById(userId)
 	if err != nil {
 		return nil, fmt.Errorf("UserService.GetById error %w", err)
@@ -24,7 +24,7 @@ func (u *UserService) GetById(userId int) (*models.User, error) {
 	return user, nil
 }
 
-func (u *UserService) GetAll() ([]*models.User, error) {
+func (u *userService) GetAll() ([]*models.User, error) {
 	user, err := u.rep.FindAll()
 	if err != nil {
 		return nil, fmt.Errorf("UserService.GetAll error %w", err)
@@ -32,7 +32,7 @@ func (u *UserService) GetAll() ([]*models.User, error) {
 	return user, nil
 }
 
-func (u *UserService) Save(user *models.User) (*models.User, error) {
+func (u *userService) Save(user *models.User) (*models.User, error) {
 	newUser, err := u.rep.Store(*user)
 	if err != nil {
 		return nil, fmt.Errorf("UserService.Save error %w", err)
@@ -40,7 +40,7 @@ func (u *UserService) Save(user *models.User) (*models.User, error) {
 	return newUser, nil
 }
 
-func (u *UserService) Delete(userId int) error {
+func (u *userService) Delete(userId int) error {
 	err := u.rep.Delete(userId)
 	if err != nil {
 		return fmt.Errorf("UserService.Delete error %w", err)
