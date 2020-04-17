@@ -9,7 +9,7 @@ import (
 func InitRepositories(pgPool *pgxpool.Pool) *repositories.RepositoryInteractor {
 
 	return &repositories.RepositoryInteractor{
-		User: db.NewUserDbRepository(pgPool),
-		//event:
+		User:  db.NewUserDbRepository(pgPool),
+		Event: db.NewEventDbRepository(pgPool),
 	}
 }

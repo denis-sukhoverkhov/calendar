@@ -8,6 +8,7 @@ require (
 	github.com/go-chi/render v1.0.1
 	github.com/golang-migrate/migrate/v4 v4.10.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
+	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v4 v4.6.0
 	github.com/spf13/viper v1.6.3
 	github.com/stretchr/testify v1.5.1

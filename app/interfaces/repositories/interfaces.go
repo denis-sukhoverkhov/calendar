@@ -5,10 +5,10 @@ import (
 )
 
 type EventRepository interface {
-	Store(user models.Event)
-	FindById(id int)
-	FindAll()
-	Delete(id int)
+	//Store(user models.Event)
+	FindById(id int) (*models.Event, error)
+	//FindAll()
+	//Delete(id int)
 }
 
 type UserRepository interface {
