@@ -7,7 +7,7 @@ import (
 type EventRepository interface {
 	//Store(user models.Event)
 	FindById(id int) (*models.Event, error)
-	//FindAll()
+	FindAll() ([]*models.Event, error)
 	//Delete(id int)
 }
 

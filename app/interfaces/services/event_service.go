@@ -23,3 +23,11 @@ func (e *eventService) GetById(eventId int) (*models.Event, error) {
 	}
 	return event, nil
 }
+
+func (e *eventService) GetAll() ([]*models.Event, error) {
+	event, err := e.rep.FindAll()
+	if err != nil {
+		return nil, fmt.Errorf("UserService.GetAll error %w", err)
+	}
+	return event, nil
+}

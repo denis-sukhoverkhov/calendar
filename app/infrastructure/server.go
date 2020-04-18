@@ -89,6 +89,7 @@ func NewHttpApi(repos *repositories.RepositoryInteractor, logger *zap.Logger) *c
 	r.Delete("/user/{userId:[0-9]+}", apihttp.DeleteUserHandler(repos))
 
 	r.Get("/event/{eventId:[0-9]+}", apihttp.GetVentHandler(repos))
+	r.Get("/event", apihttp.GetEventsHandler(repos))
 
 	logRoutes(r, logger)
 	return r

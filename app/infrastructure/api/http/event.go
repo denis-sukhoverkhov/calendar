@@ -30,21 +30,20 @@ func GetVentHandler(repos *repositories.RepositoryInteractor) http.HandlerFunc {
 	}
 }
 
-//
-//func GetUsersHandler(repos *repositories.RepositoryInteractor) http.HandlerFunc {
-//	return func(writer http.ResponseWriter, r *http.Request) {
-//		userService := services.NewUserService(&repos.User)
-//		users, err := userService.GetAll()
-//		if err != nil {
-//			writer.WriteHeader(http.StatusInternalServerError)
-//			writer.Write([]byte("500 - Something bad happened!"))
-//		}
-//		writer.Header().Set("Content-Type", "application/json")
-//		userJson, err := json.Marshal(users)
-//		writer.Write(userJson)
-//	}
-//}
-//
+func GetEventsHandler(repos *repositories.RepositoryInteractor) http.HandlerFunc {
+	return func(writer http.ResponseWriter, r *http.Request) {
+		eventService := services.NewEventService(&repos.Event)
+		events, err := eventService.GetAll()
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			writer.Write([]byte("500 - Something bad happened!"))
+		}
+		writer.Header().Set("Content-Type", "application/json")
+		userJson, err := json.Marshal(events)
+		writer.Write(userJson)
+	}
+}
+
 //func PostUserHandler(repos *repositories.RepositoryInteractor) http.HandlerFunc {
 //	return func(writer http.ResponseWriter, r *http.Request) {
 //		data := &UserRequest{}
