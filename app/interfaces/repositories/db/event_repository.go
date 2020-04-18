@@ -71,3 +71,19 @@ func (r *evenDbRepository) FindAll() ([]*models.Event, error) {
 
 	return events, nil
 }
+
+func (r *evenDbRepository) Delete(id int) error {
+	query := r.sq.Delete("\"event\"").Where(sq.Eq{"id": id})
+
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return fmt.Errorf("Event.Delete QueryBuilder error %w", err)
+	}
+
+	_, err = r.pool.Exec(context.Background(), sql, args...)
+	if err != nil {
+		return fmt.Errorf("Event.Delete execution error %w", err)
+	}
+
+	return nil
+}

@@ -100,16 +100,16 @@ func GetEventsHandler(repos *repositories.RepositoryInteractor) http.HandlerFunc
 //	}
 //	return nil
 //}
-//
-//func DeleteUserHandler(repos *repositories.RepositoryInteractor) http.HandlerFunc {
-//	return func(writer http.ResponseWriter, r *http.Request) {
-//		userId, _ := strconv.Atoi(chi.URLParam(r, "userId"))
-//		userService := services.NewUserService(&repos.User)
-//		err := userService.Delete(userId)
-//		if err != nil {
-//			writer.WriteHeader(http.StatusInternalServerError)
-//			writer.Write([]byte("500 - Something bad happened!"))
-//		}
-//		writer.WriteHeader(http.StatusOK)
-//	}
-//}
+
+func DeleteEventHandler(repos *repositories.RepositoryInteractor) http.HandlerFunc {
+	return func(writer http.ResponseWriter, r *http.Request) {
+		eventId, _ := strconv.Atoi(chi.URLParam(r, "eventId"))
+		eventService := services.NewEventService(&repos.Event)
+		err := eventService.Delete(eventId)
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			writer.Write([]byte("500 - Something bad happened!"))
+		}
+		writer.WriteHeader(http.StatusOK)
+	}
+}

@@ -8,7 +8,7 @@ type EventRepository interface {
 	//Store(user models.Event)
 	FindById(id int) (*models.Event, error)
 	FindAll() ([]*models.Event, error)
-	//Delete(id int)
+	Delete(id int) error
 }
 
 type UserRepository interface {
