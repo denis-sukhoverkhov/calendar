@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	sq "github.com/Masterminds/squirrel"
-	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
-	"github.com/denis-sukhoverkhov/calendar/app/interfaces/repositories"
+	"github.com/denis-sukhoverkhov/calendar/internal/domain/models"
+	"github.com/denis-sukhoverkhov/calendar/internal/interfaces/repositories"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 

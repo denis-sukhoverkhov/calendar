@@ -3,9 +3,9 @@ package infrastructure
 import (
 	"context"
 	"fmt"
-	apihttp "github.com/denis-sukhoverkhov/calendar/app/infrastructure/api/http"
-	"github.com/denis-sukhoverkhov/calendar/app/interfaces"
-	"github.com/denis-sukhoverkhov/calendar/app/interfaces/repositories"
+	apihttp "github.com/denis-sukhoverkhov/calendar/internal/infrastructure/api/http"
+	"github.com/denis-sukhoverkhov/calendar/internal/interfaces"
+	"github.com/denis-sukhoverkhov/calendar/internal/interfaces/repositories"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"go.uber.org/zap"
@@ -90,6 +90,7 @@ func NewHttpApi(repos *repositories.RepositoryInteractor, logger *zap.Logger) *c
 
 	r.Get("/event/{eventId:[0-9]+}", apihttp.GetVentHandler(repos))
 	r.Get("/event", apihttp.GetEventsHandler(repos))
+	r.Post("/event", apihttp.PostEventHandler(repos))
 	r.Delete("/event/{eventId:[0-9]+}", apihttp.DeleteEventHandler(repos))
 
 	logRoutes(r, logger)

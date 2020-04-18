@@ -1,8 +1,8 @@
 package interfaces
 
 import (
-	"github.com/denis-sukhoverkhov/calendar/app/interfaces/repositories"
-	"github.com/denis-sukhoverkhov/calendar/app/interfaces/repositories/db"
+	"github.com/denis-sukhoverkhov/calendar/internal/interfaces/repositories"
+	"github.com/denis-sukhoverkhov/calendar/internal/interfaces/repositories/db"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 

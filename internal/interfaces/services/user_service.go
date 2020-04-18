@@ -2,8 +2,8 @@ package services
 
 import (
 	"fmt"
-	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
-	"github.com/denis-sukhoverkhov/calendar/app/interfaces/repositories"
+	"github.com/denis-sukhoverkhov/calendar/internal/domain/models"
+	"github.com/denis-sukhoverkhov/calendar/internal/interfaces/repositories"
 )
 
 type userService struct {

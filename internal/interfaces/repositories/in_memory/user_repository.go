@@ -2,7 +2,7 @@ package in_memory
 
 import (
 	"errors"
-	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
+	"github.com/denis-sukhoverkhov/calendar/internal/domain/models"
 )
 
 type userRepository struct {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/denis-sukhoverkhov/calendar/app/infrastructure"
+	"github.com/denis-sukhoverkhov/calendar/internal/infrastructure"
 	"log"
 )
 

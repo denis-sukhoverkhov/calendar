@@ -2,8 +2,8 @@ package in_memory
 
 import (
 	"errors"
-	"github.com/denis-sukhoverkhov/calendar/app/domain"
-	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
+	"github.com/denis-sukhoverkhov/calendar/internal/domain"
+	"github.com/denis-sukhoverkhov/calendar/internal/domain/models"
 )
 
 type eventRepository struct {

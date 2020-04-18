@@ -3,9 +3,9 @@ package infrastructure
 import (
 	"encoding/json"
 	"errors"
-	"github.com/denis-sukhoverkhov/calendar/app/domain/models"
-	"github.com/denis-sukhoverkhov/calendar/app/interfaces/repositories"
-	"github.com/denis-sukhoverkhov/calendar/app/interfaces/services"
+	"github.com/denis-sukhoverkhov/calendar/internal/domain/models"
+	"github.com/denis-sukhoverkhov/calendar/internal/interfaces/repositories"
+	"github.com/denis-sukhoverkhov/calendar/internal/interfaces/services"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	"net/http"
