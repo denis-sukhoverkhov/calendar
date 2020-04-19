@@ -5,6 +5,7 @@ import (
 	"github.com/denis-sukhoverkhov/calendar/internal/domain"
 	"github.com/denis-sukhoverkhov/calendar/internal/domain/models"
 	"github.com/denis-sukhoverkhov/calendar/internal/interfaces/repositories"
+	"time"
 )
 
 type eventService struct {
@@ -60,4 +61,12 @@ func (e *eventService) Delete(eventId int) error {
 		return fmt.Errorf("EventService.Delete error %w", err)
 	}
 	return nil
+}
+
+func (e *eventService) GetAllByDay(userId int64, date time.Time) ([]*models.Event, error) {
+	events, err := e.rep.FindByUserIdAndDate(userId, date)
+	if err != nil {
+		return nil, fmt.Errorf("EventService.GetAllByDay error %w", err)
+	}
+	return events, nil
 }

@@ -109,3 +109,26 @@ func DeleteEventHandler(repos *repositories.RepositoryInteractor) http.HandlerFu
 		writer.WriteHeader(http.StatusOK)
 	}
 }
+
+func GetEventsForDayHandler(repos *repositories.RepositoryInteractor) http.HandlerFunc {
+	return func(writer http.ResponseWriter, r *http.Request) {
+		userId, _ := strconv.Atoi(r.URL.Query().Get("userId"))
+		date, err := time.Parse("2006-01-02", r.URL.Query().Get("date"))
+		if err != nil {
+			writer.WriteHeader(http.StatusBadRequest)
+			writer.Write([]byte(err.Error()))
+			return
+		}
+
+		eventService := services.NewEventService(&repos.Event)
+		events, err := eventService.GetAllByDay(int64(userId), date)
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			writer.Write([]byte("500 - Something bad happened!"))
+			return
+		}
+		writer.Header().Set("Content-Type", "application/json")
+		userJson, err := json.Marshal(events)
+		writer.Write(userJson)
+	}
+}
